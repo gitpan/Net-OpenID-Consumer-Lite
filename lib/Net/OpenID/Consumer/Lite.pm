@@ -2,7 +2,7 @@ package Net::OpenID::Consumer::Lite;
 use strict;
 use warnings;
 use 5.00800;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 use LWP::UserAgent;
 use Carp ();
 
@@ -23,6 +23,7 @@ sub _get {
     my $ua = _ua();
     my $res = $ua->get($url);
     unless ($IGNORE_SSL_ERROR) {
+    use Data::Dumper; warn Dumper($res);
         if ( my $warnings = $res->header('Client-SSL-Warning') ) {
             Carp::croak("invalid ssl? ${url}, ${warnings}");
         }
@@ -176,9 +177,11 @@ This module doesn't depend to L<Crypt::DH>!!
 
 =head1 LIMITATION
 
-    This module supports OpenID 2.0 only.
     This module supports SSL OPs only.
     This module doesn't care the XRDS Location. Please pass me the real OpenID server path.
+    This module doesn't supports XRI.
+    This module doesn't supports Endpoind discovery.
+    This module doesn't supports association for signature validation.
 
 =head1 How to solve SSL Certifications Error
 

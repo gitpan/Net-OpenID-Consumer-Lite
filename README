@@ -1,27 +1,70 @@
-This is Perl module Net::OpenID::Consumer::Lite.
+NAME
+    Net::OpenID::Consumer::Lite - OpenID consumer library for minimalist
 
-INSTALLATION
+SYNOPSIS
+        use Net::OpenID::Consumer::Lite;
+        my $csr = Net::OpenID::Consumer::Lite->new();
 
-Net::OpenID::Consumer::Lite installation is straightforward. If your CPAN shell is set up,
-you should just be able to do
+        # get check url
+        my $check_url = Net::OpenID::Consumer::Lite->check_url(
+            'https://mixi.jp/openid_server.pl',   # OpenID server url
+            'http://example.com/back_to_here',    # return url
+            {
+                "http://openid.net/extensions/sreg/1.1" => { required => join( ",", qw/email nickname/ ) }
+            }, # extensions(optional)
+        );
 
-    % cpan Net::OpenID::Consumer::Lite
+        # handle response of OP
+        Net::OpenID::Consumer::Lite->handle_server_response(
+            $request => (
+                not_openid => sub {
+                    die "Not an OpenID message";
+                },
+                setup_required => sub {
+                    my $setup_url = shift;
+                    # Redirect the user to $setup_url
+                },
+                cancelled => sub {
+                    # Do something appropriate when the user hits "cancel" at the OP
+                },
+                verified => sub {
+                    my $vident = shift;
+                    # Do something with the VerifiedIdentity object $vident
+                },
+                error => sub {
+                    my $err = shift;
+                    die($err);
+                },
+            )
+        );
 
-Download it, unpack it, then build it as per the usual:
+DESCRIPTION
+    Net::OpenID::Consumer::Lite is limited version of OpenID consumer
+    library. This module works fast.This module works well on rental
+    server/CGI.
 
-    % perl Makefile.PL
-    % make && make test
+    This module depend to LWP::UserAgent, (Net::SSL|IO::Socket::SSL) and
+    URI. This module doesn't depend to Crypt::DH!!
 
-Then install it:
+LIMITATION
+        This module supports SSL OPs only.
+        This module doesn't care the XRDS Location. Please pass me the real OpenID server path.
+        This module doesn't supports XRI.
+        This module doesn't supports Endpoind discovery.
+        This module doesn't supports association for signature validation.
 
-    % make install
+How to solve SSL Certifications Error
+    If Crypt::SSLeay or Net::SSLeay says "Peer certificate not verified" or
+    other error messages, please see the manual of your SSL libraries =)
+    This is SSL library's problem.
 
-DOCUMENTATION
+AUTHOR
+    Tokuhiro Matsuno <tokuhirom@gmail.com>
 
-Net::OpenID::Consumer::Lite documentation is available as in POD. So you can do:
+SEE ALSO
+    Net::OpenID::Consumer
 
-    % perldoc Net::OpenID::Consumer::Lite
+LICENSE
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
 
-to read the documentation online with your favorite pager.
-
-Tokuhiro Matsuno

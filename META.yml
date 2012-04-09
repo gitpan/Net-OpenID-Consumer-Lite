@@ -1,12 +1,13 @@
 ---
 abstract: 'OpenID consumer library for minimalist'
 author:
-  - 'Tokuhiro Matsuno <tokuhirom@gmail.com>'
+  - 'Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>'
 build_requires:
-  Test::More: 0
-  YAML: 0
-distribution_type: module
-generated_by: 'Module::Install version 0.77'
+  Test::More: 0.98
+configure_requires:
+  Module::Build: 0.38
+dynamic_config: 0
+generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -14,13 +15,19 @@ meta-spec:
 name: Net-OpenID-Consumer-Lite
 no_index:
   directory:
+    - examples
     - inc
     - t
-    - examples
+    - xt
+provides:
+  Net::OpenID::Consumer::Lite:
+    file: lib/Net/OpenID/Consumer/Lite.pm
+    version: 0.03
 requires:
+  Filter::Util::Call: 0
   LWP::UserAgent: 0
   URI: 1.37
-  perl: 5.8.0
+  perl: 5.00800
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.02
+version: 0.03
